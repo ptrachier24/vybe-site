@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYBE — Creator Outreach Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #07070F; --deep: #0D0D1E; --card: #11112A; --border: rgba(255,255,255,0.08);
+    --red: #FF1F55; --gold: #FFBE0B; --green: #2DFF91; --white: #FFFFFF; --muted: rgba(255,255,255,0.45);
+    --body: 'Outfit', sans-serif; --display: 'Bebas Neue', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--black); color: var(--white); font-family: var(--body); min-height: 100vh; }
+
+  header {
+    background: var(--deep); border-bottom: 1px solid var(--border);
+    padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo { font-family: var(--display); font-size: 1.6rem; letter-spacing: 0.1em; }
+  .logo span { color: var(--red); }
+  .header-sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+  .stats-bar {
+    display: flex; gap: 1px; background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-box {
+    flex: 1; padding: 16px 24px; background: var(--deep);
+    text-align: center;
+  }
+  .stat-box .num { font-family: var(--display); font-size: 2rem; letter-spacing: 0.05em; }
+  .stat-box .lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+  .toolbar {
+    padding: 16px 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    background: var(--deep); border-bottom: 1px solid var(--border);
+  }
+  .toolbar input, .toolbar select {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 14px; color: var(--white); font-family: var(--body); font-size: 0.85rem;
+    outline: none; transition: border-color 0.2s;
+  }
+  .toolbar input { width: 220px; }
+  .toolbar input:focus, .toolbar select:focus { border-color: var(--red); }
+  .toolbar input::placeholder { color: var(--muted); }
+
+  .btn {
+    background: var(--red); color: var(--white); border: none; border-radius: 8px;
+    padding: 9px 18px; font-family: var(--body); font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { background: #e0103e; transform: translateY(-1px); }
+  .btn.secondary { background: var(--card); border: 1px solid var(--border); }
+  .btn.secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: var(--card); padding: 12px 16px; text-align: left;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap;
+    cursor: pointer; user-select: none;
+  }
+  thead th:hover { color: var(--white); }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+  tbody td { padding: 13px 16px; font-size: 0.88rem; vertical-align: middle; }
+
+  .handle { font-weight: 600; color: var(--white); }
+  .handle a { color: var(--white); text-decoration: none; }
+  .handle a:hover { color: var(--red); }
+  .platform-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 8px;
+    border-radius: 4px; margin-right: 4px;
+  }
+  .ig { background: rgba(225,100,180,0.15); color: #E164B4; }
+  .tt { background: rgba(50,210,250,0.15); color: #32D2FA; }
+
+  .status-pill {
+    display: inline-block; padding: 4px 12px; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .s-prospect { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
+  .s-messaged { background: rgba(255,190,11,0.12); color: var(--gold); }
+  .s-replied { background: rgba(100,150,255,0.12); color: #6496FF; }
+  .s-approved { background: rgba(45,255,145,0.12); color: var(--green); }
+  .s-declined { background: rgba(255,31,85,0.1); color: rgba(255,31,85,0.7); }
+  .s-follow-up { background: rgba(255,130,30,0.12); color: #FF821E; }
+
+  .followers-num { font-weight: 600; }
+  .tier-badge {
+    font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 700;
+  }
+  .t-nano { background: rgba(255,255,255,0.06); color: var(--muted); }
+  .t-micro { background: rgba(255,190,11,0.1); color: var(--gold); }
+  .t-mid { background: rgba(255,31,85,0.1); color: var(--red); }
+
+  .actions { display: flex; gap: 6px; }
+  .act-btn {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 5px 10px; color: var(--muted); font-size: 0.75rem; cursor: pointer;
+    transition: all 0.15s; font-family: var(--body);
+  }
+  .act-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .act-btn.approve { color: var(--green); border-color: rgba(45,255,145,0.2); }
+  .act-btn.approve:hover { background: rgba(45,255,145,0.08); }
+
+  .note-text { font-size: 0.78rem; color: var(--muted); max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .empty-state {
+    text-align: center; padding: 80px 24px; color: var(--muted);
+  }
+  .empty-state .big { font-family: var(--display); font-size: 3rem; margin-bottom: 12px; opacity: 0.2; }
+
+  /* Modal */
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal {
+    background: var(--deep); border: 1px solid var(--border); border-radius: 16px;
+    padding: 36px; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+    animation: slideUp 0.3s ease;
+  }
+  .modal h2 { font-family: var(--display); font-size: 1.8rem; letter-spacing: 0.05em; margin-bottom: 24px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: span 2; }
+  .form-field label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .form-field input, .form-field select, .form-field textarea {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 11px 14px; color: var(--white); font-family: var(--body); font-size: 0.9rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--red); }
+  .form-field input::placeholder { color: var(--muted); }
+  .form-field textarea { resize: vertical; min-height: 70px; }
+  .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+  .btn-cancel { background: var(--card); border: 1px solid var(--border); color: var(--white); }
+  .btn-cancel:hover { border-color: rgba(255,255,255,0.2); }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .progress-container { padding: 0 24px 24px; }
+  .progress-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 100px; transition: width 0.5s ease; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">VY<span>BE</span></div>
+    <div class="header-sub">Creator Outreach Tracker — South Florida Launch</div>
+  </div>
+  <div style="font-size:0.8rem; color:var(--muted);">Goal: 100 approved creators</div>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat-box"><div class="num" id="statTotal" style="color:white">0</div><div class="lbl">Total Tracked</div></div>
+  <div class="stat-box"><div class="num" id="statMessaged" style="color:var(--gold)">0</div><div class="lbl">Messaged</div></div>
+  <div class="stat-box"><div class="num" id="statReplied" style="color:#6496FF">0</div><div class="lbl">Replied</div></div>
+  <div class="stat-box"><div class="num" id="statApproved" style="color:var(--green)">0</div><div class="lbl">Approved</div></div>
+  <div class="stat-box"><div class="num" id="statDeclined" style="color:var(--red)">0</div><div class="lbl">Declined</div></div>
+  <div class="stat-box"><div class="num" id="statFollowUp" style="color:#FF821E">0</div><div class="lbl">Follow Up</div></div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-label"><span>Approved creators toward goal</span><span id="progressText">0 / 100</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="searchInput" placeholder="🔍  Search by name or handle..." oninput="renderTable()">
+  <select id="filterStatus" onchange="renderTable()">
+    <option value="">All Statuses</option>
+    <option value="prospect">Prospect</option>
+    <option value="messaged">Messaged</option>
+    <option value="replied">Replied</option>
+    <option value="follow-up">Follow Up</option>
+    <option value="approved">Approved</option>
+    <option value="declined">Declined</option>
+  </select>
+  <select id="filterPlatform" onchange="renderTable()">
+    <option value="">All Platforms</option>
+    <option value="instagram">Instagram</option>
+    <option value="tiktok">TikTok</option>
+    <option value="both">Both</option>
+  </select>
+  <button class="btn" onclick="openModal()">+ Add Creator</button>
+  <button class="btn secondary" onclick="exportCSV()">⬇ Export CSV</button>
+  <button class="btn secondary" onclick="clearAll()">🗑 Clear All</button>
+</div>
+
+<div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr>
+        <th onclick="sortBy('name')">Name ↕</th>
+        <th>Handle(s)</th>
+        <th>Platform</th>
+        <th onclick="sortBy('followers')">Followers ↕</th>
+        <th>Tier</th>
+        <th onclick="sortBy('status')">Status ↕</th>
+        <th>Last Contact</th>
+        <th>Note</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<div id="emptyState" class="empty-state" style="display:none;">
+  <div class="big">📋</div>
+  <p>No creators tracked yet. Click <strong>+ Add Creator</strong> to start.</p>
+</div>
+
+<!-- MODAL -->
+<div id="modalBg" class="modal-bg" style="display:none;" onclick="closeModalBg(event)">
+  <div class="modal">
+    <h2 id="modalTitle">ADD CREATOR</h2>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Name</label>
+        <input type="text" id="fName" placeholder="First Last">
+      </div>
+      <div class="form-field">
+        <label>Primary Platform</label>
+        <select id="fPlatform">
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="both">Both</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Instagram Handle</label>
+        <input type="text" id="fIG" placeholder="@handle">
+      </div>
+      <div class="form-field">
+        <label>TikTok Handle</label>
+        <input type="text" id="fTT" placeholder="@handle">
+      </div>
+      <div class="form-field">
+        <label>Follower Count</label>
+        <input type="number" id="fFollowers" placeholder="15000">
+      </div>
+      <div class="form-field">
+        <label>Engagement Rate %</label>
+        <input type="number" id="fEngagement" placeholder="4.5" step="0.1">
+      </div>
+      <div class="form-field">
+        <label>Status</label>
+        <select id="fStatus">
+          <option value="prospect">Prospect</option>
+          <option value="messaged">Messaged</option>
+          <option value="replied">Replied</option>
+          <option value="follow-up">Follow Up</option>
+          <option value="approved">Approved</option>
+          <option value="declined">Declined</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Last Contact</label>
+        <input type="date" id="fDate">
+      </div>
+      <div class="form-field full">
+        <label>Notes</label>
+        <textarea id="fNotes" placeholder="Audience location, content quality, reply details..."></textarea>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn" id="saveBtn" onclick="saveCreator()">Save Creator</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let creators = JSON.parse(localStorage.getItem('vybe_creators') || '[]');
+let editingId = null;
+let sortKey = null;
+let sortDir = 1;
+
+function save() {
+  localStorage.setItem('vybe_creators', JSON.stringify(creators));
+}
+
+function getTier(followers) {
+  if (followers < 10000) return { label: 'Nano', cls: 't-nano' };
+  if (followers < 50000) return { label: 'Micro', cls: 't-micro' };
+  return { label: 'Mid', cls: 't-mid' };
+}
+
+function getStatusCls(s) {
+  return { prospect: 's-prospect', messaged: 's-messaged', replied: 's-replied', approved: 's-approved', declined: 's-declined', 'follow-up': 's-follow-up' }[s] || 's-prospect';
+}
+
+function updateStats() {
+  const counts = { total: creators.length, messaged: 0, replied: 0, approved: 0, declined: 0, 'follow-up': 0 };
+  creators.forEach(c => {
+    if (counts[c.status] !== undefined) counts[c.status]++;
+  });
+  document.getElementById('statTotal').textContent = counts.total;
+  document.getElementById('statMessaged').textContent = counts.messaged;
+  document.getElementById('statReplied').textContent = counts.replied;
+  document.getElementById('statApproved').textContent = counts.approved;
+  document.getElementById('statDeclined').textContent = counts.declined;
+  document.getElementById('statFollowUp').textContent = counts['follow-up'];
+  const pct = Math.min((counts.approved / 100) * 100, 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = counts.approved + ' / 100';
+}
+
+function cycleStatus(id) {
+  const order = ['prospect', 'messaged', 'replied', 'follow-up', 'approved', 'declined'];
+  const c = creators.find(x => x.id === id);
+  if (!c) return;
+  const idx = order.indexOf(c.status);
+  c.status = order[(idx + 1) % order.length];
+  save(); renderTable(); updateStats();
+}
+
+function renderTable() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const filterStatus = document.getElementById('filterStatus').value;
+  const filterPlatform = document.getElementById('filterPlatform').value;
+
+  let filtered = creators.filter(c => {
+    const matchSearch = !search || c.name.toLowerCase().includes(search) || (c.ig || '').toLowerCase().includes(search) || (c.tt || '').toLowerCase().includes(search);
+    const matchStatus = !filterStatus || c.status === filterStatus;
+    const matchPlatform = !filterPlatform || c.platform === filterPlatform;
+    return matchSearch && matchStatus && matchPlatform;
+  });
+
+  if (sortKey) {
+    filtered.sort((a, b) => {
+      const av = a[sortKey] || 0, bv = b[sortKey] || 0;
+      if (typeof av === 'string') return av.localeCompare(bv) * sortDir;
+      return (av - bv) * sortDir;
+    });
+  }
+
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(c => {
+    const tier = getTier(Number(c.followers) || 0);
+    const handles = [c.ig ? `<span class="platform-tag ig">IG</span> ${c.ig}` : '', c.tt ? `<span class="platform-tag tt">TT</span> ${c.tt}` : ''].filter(Boolean).join('<br>');
+    const platLabel = { instagram: '📸 Instagram', tiktok: '🎵 TikTok', both: '📸🎵 Both' }[c.platform] || c.platform;
+    return `<tr>
+      <td class="handle">${c.name || '—'}</td>
+      <td style="font-size:0.82rem">${handles || '—'}</td>
+      <td style="font-size:0.82rem;color:var(--muted)">${platLabel}</td>
+      <td class="followers-num">${Number(c.followers || 0).toLocaleString()}</td>
+      <td><span class="tier-badge ${tier.cls}">${tier.label}</span></td>
+      <td><span class="status-pill ${getStatusCls(c.status)}" onclick="cycleStatus('${c.id}')" title="Click to advance status">${c.status}</span></td>
+      <td style="font-size:0.82rem;color:var(--muted)">${c.date || '—'}</td>
+      <td><div class="note-text" title="${c.notes || ''}">${c.notes || '—'}</div></td>
+      <td>
+        <div class="actions">
+          <button class="act-btn" onclick="editCreator('${c.id}')">Edit</button>
+          <button class="act-btn approve" onclick="quickApprove('${c.id}')">✓ Approve</button>
+          <button class="act-btn" onclick="deleteCreator('${c.id}')" style="color:rgba(255,31,85,0.6)">×</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function quickApprove(id) {
+  const c = creators.find(x => x.id === id);
+  if (c) { c.status = 'approved'; save(); renderTable(); updateStats(); }
+}
+
+function deleteCreator(id) {
+  if (!confirm('Remove this creator?')) return;
+  creators = creators.filter(x => x.id !== id);
+  save(); renderTable(); updateStats();
+}
+
+function openModal(id = null) {
+  editingId = id;
+  const c = id ? creators.find(x => x.id === id) : null;
+  document.getElementById('modalTitle').textContent = id ? 'EDIT CREATOR' : 'ADD CREATOR';
+  document.getElementById('fName').value = c?.name || '';
+  document.getElementById('fIG').value = c?.ig || '';
+  document.getElementById('fTT').value = c?.tt || '';
+  document.getElementById('fPlatform').value = c?.platform || 'instagram';
+  document.getElementById('fFollowers').value = c?.followers || '';
+  document.getElementById('fEngagement').value = c?.engagement || '';
+  document.getElementById('fStatus').value = c?.status || 'prospect';
+  document.getElementById('fDate').value = c?.date || new Date().toISOString().split('T')[0];
+  document.getElementById('fNotes').value = c?.notes || '';
+  document.getElementById('modalBg').style.display = 'flex';
+}
+
+function editCreator(id) { openModal(id); }
+
+function closeModal() { document.getElementById('modalBg').style.display = 'none'; editingId = null; }
+function closeModalBg(e) { if (e.target === document.getElementById('modalBg')) closeModal(); }
+
+function saveCreator() {
+  const data = {
+    id: editingId || Date.now().toString(),
+    name: document.getElementById('fName').value.trim(),
+    ig: document.getElementById('fIG').value.trim(),
+    tt: document.getElementById('fTT').value.trim(),
+    platform: document.getElementById('fPlatform').value,
+    followers: document.getElementById('fFollowers').value,
+    engagement: document.getElementById('fEngagement').value,
+    status: document.getElementById('fStatus').value,
+    date: document.getElementById('fDate').value,
+    notes: document.getElementById('fNotes').value.trim(),
+  };
+  if (!data.name) { alert('Name is required'); return; }
+  if (editingId) {
+    const idx = creators.findIndex(x => x.id === editingId);
+    if (idx >= 0) creators[idx] = data;
+  } else {
+    creators.push(data);
+  }
+  save(); closeModal(); renderTable(); updateStats();
+}
+
+function sortBy(key) {
+  if (sortKey === key) sortDir *= -1;
+  else { sortKey = key; sortDir = 1; }
+  renderTable();
+}
+
+function exportCSV() {
+  const cols = ['name','ig','tt','platform','followers','engagement','status','date','notes'];
+  const headers = ['Name','Instagram','TikTok','Platform','Followers','Engagement%','Status','Last Contact','Notes'];
+  const rows = [headers, ...creators.map(c => cols.map(k => `"${(c[k]||'').toString().replace(/"/g,'""')}"` ))];
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'vybe-creators-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+}
+
+function clearAll() {
+  if (!confirm('Clear ALL creator data? This cannot be undone.')) return;
+  creators = []; save(); renderTable(); updateStats();
+}
+
+// Init with sample data if empty
+if (creators.length === 0) {
+  creators = [
+    { id: '1', name: 'Sofia Martinez', ig: '@sofiamiami', tt: '@sofiagoesout', platform: 'both', followers: '22000', engagement: '5.2', status: 'prospect', date: new Date().toISOString().split('T')[0], notes: 'Strong Miami nightlife content, 78% local audience' },
+    { id: '2', name: 'Carlos Rivera', ig: '@carlosrvra', tt: '', platform: 'instagram', followers: '8500', engagement: '7.1', status: 'messaged', date: new Date().toISOString().split('T')[0], notes: 'Sent DM 3/9. Nano but very local.' },
+    { id: '3', name: 'Jade Thompson', ig: '@jadethompsonfl', tt: '@jadett', platform: 'both', followers: '41000', engagement: '4.8', status: 'replied', date: new Date().toISOString().split('T')[0], notes: 'Interested, asked about payout structure' },
+  ];
+  save();
+}
+
+renderTable();
+updateStats();
+</script>
+</body>
+</html>

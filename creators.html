@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYBE Creators — Apply & Get Paid</title>
+<meta name="description" content="Apply to become a VYBE creator. Earn $50-$400 per campaign by posting about Miami's top nightlife venues. Paid per verified guest, not followers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #07070F;
+    --deep: #0D0D1E;
+    --card: #11112A;
+    --border: rgba(255,255,255,0.07);
+    --red: #FF1F55;
+    --red-glow: rgba(255,31,85,0.35);
+    --gold: #FFBE0B;
+    --white: #FFFFFF;
+    --muted: rgba(255,255,255,0.5);
+    --body: 'Outfit', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--black); color: var(--white); font-family: var(--body); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 5%;
+    background: rgba(7,7,15,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--display); font-size: 2rem; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--red); }
+  .back-link { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+  .back-link:hover { color: var(--white); }
+
+  /* ─── HERO ─── */
+  .creator-hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 5% 80px;
+    gap: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .creator-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: radial-gradient(ellipse at 70% 50%, rgba(255,31,85,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+  .hero-left .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(45,255,145,0.1);
+    border: 1px solid rgba(45,255,145,0.3);
+    color: #2DFF91;
+    padding: 6px 16px; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #2DFF91; animation: blink 1.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
+
+  .hero-left h1 {
+    font-family: var(--display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero-left h1 .red { color: var(--red); }
+  .hero-left h1 .gold { color: var(--gold); }
+
+  .hero-left p {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    max-width: 460px; margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-left p strong { color: var(--white); }
+
+  .perks {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.25s ease both;
+  }
+  .perk {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 0.82rem; font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ─── FORM ─── */
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 44px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 20%; right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), var(--gold), transparent);
+    border-radius: 100px;
+  }
+
+  .form-card h2 {
+    font-family: var(--display);
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .form-card .form-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+
+  .spots-bar {
+    background: rgba(255,190,11,0.08);
+    border: 1px solid rgba(255,190,11,0.2);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .spots-bar span { color: var(--muted); font-weight: 400; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  .form-group input::placeholder { color: rgba(255,255,255,0.2); }
+  .form-group input:focus,
+  .form-group select:focus { border-color: var(--red); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-family: var(--body);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px var(--red-glow);
+  }
+  .form-submit:hover { background: #e0103e; transform: translateY(-1px); box-shadow: 0 8px 30px var(--red-glow); }
+
+  .form-disclaimer { font-size: 0.75rem; color: rgba(255,255,255,0.3); text-align: center; margin-top: 12px; }
+
+  /* ─── REQUIREMENTS ─── */
+  #requirements {
+    background: var(--deep);
+    padding: 100px 5%;
+  }
+  .req-header { text-align: center; margin-bottom: 60px; }
+  .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+  .section-title { font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.03em; }
+
+  .req-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .req-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .req-card:hover { transform: translateY(-4px); border-color: rgba(255,31,85,0.3); }
+
+  .req-icon { font-size: 2rem; margin-bottom: 16px; }
+  .req-card h3 { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+  .req-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+  .req-check { color: #2DFF91; font-weight: 700; }
+  .req-x { color: var(--red); font-weight: 700; }
+
+  /* ─── PAYOUT TABLE ─── */
+  #earn { padding: 100px 5%; }
+  .earn-header { text-align: center; margin-bottom: 60px; }
+
+  .payout-table {
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .payout-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .payout-row:last-child { border-bottom: none; }
+  .payout-row.header { background: var(--card); }
+
+  .payout-cell {
+    padding: 18px 24px;
+    font-size: 0.9rem;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .payout-cell:last-child { border-right: none; }
+  .payout-row.header .payout-cell {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .payout-row:nth-child(even):not(.header) .payout-cell { background: rgba(255,255,255,0.02); }
+
+  .payout-tag {
+    background: rgba(255,31,85,0.12);
+    color: var(--red);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+  .payout-amount { font-weight: 700; color: var(--gold); font-size: 1rem; }
+  .payout-best { background: rgba(45,255,145,0.07); }
+  .payout-best .payout-cell { color: var(--white); }
+
+  /* ─── FAQ ─── */
+  #faq { background: var(--deep); padding: 100px 5%; }
+  .faq-header { text-align: center; margin-bottom: 60px; }
+  .faq-list { max-width: 780px; margin: 0 auto; }
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+  }
+  .faq-q {
+    font-weight: 600; font-size: 1rem; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px;
+    transition: color 0.2s;
+  }
+  .faq-q:hover { color: var(--red); }
+  .faq-toggle { color: var(--red); font-size: 1.4rem; font-weight: 300; flex-shrink: 0; transition: transform 0.3s; }
+  .faq-item.open .faq-toggle { transform: rotate(45deg); }
+  .faq-a {
+    font-size: 0.93rem; color: var(--muted); line-height: 1.7;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-top: 16px; }
+
+  /* ─── FINAL CTA ─── */
+  .final-cta {
+    text-align: center;
+    padding: 120px 5%;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(255,31,85,0.2) 0%, transparent 70%);
+  }
+  .final-cta h2 { font-family: var(--display); font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: 0.03em; margin-bottom: 24px; position: relative; z-index: 1; }
+  .final-cta h2 span { color: var(--red); }
+  .final-cta p { font-size: 1.05rem; color: var(--muted); max-width: 460px; margin: 0 auto 40px; position: relative; z-index: 1; }
+  .btn-primary {
+    background: var(--red); color: var(--white); padding: 16px 40px;
+    border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 1.05rem;
+    display: inline-block; transition: all 0.2s;
+    box-shadow: 0 0 30px var(--red-glow);
+    position: relative; z-index: 1;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--red-glow); }
+
+  footer {
+    padding: 40px 5%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer a { font-family: var(--display); font-size: 1.6rem; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
+  footer a span { color: var(--red); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .creator-hero { grid-template-columns: 1fr; padding-top: 100px; }
+    .payout-row { grid-template-columns: 2fr 1fr 1fr; }
+    .payout-cell:nth-child(3) { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">VY<span>BE</span></a>
+  <a href="index.html" class="back-link">← Back to Home</a>
+</nav>
+
+<!-- HERO + FORM -->
+<div class="creator-hero">
+  <div class="hero-left">
+    <div class="badge"><div class="badge-dot"></div> 73 of 100 early spots filled</div>
+    <h1>TURN YOUR<br><span class="gold">NIGHTLIFE</span><br>INTO <span class="red">INCOME.</span></h1>
+    <p>
+      VYBE pays local creators <strong>per verified guest</strong> — not views. Your Miami followers are worth real money every weekend. You just need the right platform.
+    </p>
+    <div class="perks">
+      <div class="perk">💸 Paid within 48 hours</div>
+      <div class="perk">📍 Miami-local campaigns</div>
+      <div class="perk">🎯 No follower minimum</div>
+      <div class="perk">🔒 FTC compliant</div>
+      <div class="perk">📊 Real-time tracking</div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h2>APPLY NOW</h2>
+    <p class="form-sub">Takes 2 minutes. We review every application within 24 hours.</p>
+
+    <div class="spots-bar">
+      🔥 Only 27 early spots remaining <span>— first 100 creators get guaranteed $50 first campaign</span>
+    </div>
+
+    <div class="form-group">
+      <label>Your Name</label>
+      <input type="text" placeholder="First and last name">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Instagram Handle</label>
+        <input type="text" placeholder="@yourhandle">
+      </div>
+      <div class="form-group">
+        <label>TikTok Handle</label>
+        <input type="text" placeholder="@yourhandle">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Follower Count</label>
+        <select>
+          <option value="">Select range</option>
+          <option>1K – 5K</option>
+          <option>5K – 15K</option>
+          <option>15K – 50K</option>
+          <option>50K – 100K</option>
+          <option>100K+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Main City</label>
+        <select>
+          <option value="">Select city</option>
+          <option>Miami</option>
+          <option>Fort Lauderdale</option>
+          <option>Boca Raton</option>
+          <option>Other South FL</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+1 (305) 000-0000">
+    </div>
+
+    <button class="form-submit" onclick="handleSubmit(this)">Apply for Early Access →</button>
+    <p class="form-disclaimer">By applying you agree to VYBE's creator terms. Your info is never sold. Approval typically within 24 hours.</p>
+  </div>
+</div>
+
+<!-- REQUIREMENTS -->
+<section id="requirements">
+  <div class="req-header">
+    <p class="section-label">Who We Accept</p>
+    <h2 class="section-title">You don't need<br>to be famous.</h2>
+  </div>
+  <div class="req-grid">
+    <div class="req-card">
+      <div class="req-icon">📍</div>
+      <h3>Based in South Florida</h3>
+      <p>Your audience needs to actually go out in Miami. We check that 60%+ of your followers are in the metro area. Quality over quantity.</p>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">👥</div>
+      <h3>3,000+ Followers (Any Platform)</h3>
+      <p>No mega following needed. We've seen creators with 4K followers outperform accounts with 80K because their audience is <em>actually local</em>.</p>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">🎬</div>
+      <h3>Active Content Creator</h3>
+      <p>Post at least 2x per week. Short-form video preferred (TikTok, Reels). You don't need to be a professional — authentic nightlife content wins every time.</p>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">🎂</div>
+      <h3>21+ Years Old</h3>
+      <p>All VYBE venue campaigns involve 21+ establishments. Age verification is required during onboarding. No exceptions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PAYOUT RATES -->
+<section id="earn">
+  <div class="earn-header">
+    <p class="section-label">Earnings Breakdown</p>
+    <h2 class="section-title" style="font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4rem);">Real numbers.<br>Real payouts.</h2>
+  </div>
+
+  <div class="payout-table">
+    <div class="payout-row header">
+      <div class="payout-cell">Venue Type</div>
+      <div class="payout-cell">Per Guest</div>
+      <div class="payout-cell">Avg Campaign</div>
+      <div class="payout-cell">Top Earners</div>
+    </div>
+    <div class="payout-row">
+      <div class="payout-cell">🎶 Nightclub <span class="payout-tag">Hot</span></div>
+      <div class="payout-cell payout-amount">$8–12</div>
+      <div class="payout-cell">$200–$400</div>
+      <div class="payout-cell">$600+</div>
+    </div>
+    <div class="payout-row payout-best">
+      <div class="payout-cell">🥂 Bottle Service <span class="payout-tag">Top Paid</span></div>
+      <div class="payout-cell payout-amount">$15–25</div>
+      <div class="payout-cell">$300–$600</div>
+      <div class="payout-cell">$900+</div>
+    </div>
+    <div class="payout-row">
+      <div class="payout-cell">🌊 Pool Party</div>
+      <div class="payout-cell payout-amount">$6–10</div>
+      <div class="payout-cell">$150–$300</div>
+      <div class="payout-cell">$450+</div>
+    </div>
+    <div class="payout-row">
+      <div class="payout-cell">🌆 Rooftop Bar</div>
+      <div class="payout-cell payout-amount">$5–9</div>
+      <div class="payout-cell">$100–$250</div>
+      <div class="payout-cell">$350+</div>
+    </div>
+    <div class="payout-row">
+      <div class="payout-cell">☀️ Day Club</div>
+      <div class="payout-cell payout-amount">$7–12</div>
+      <div class="payout-cell">$150–$350</div>
+      <div class="payout-cell">$500+</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-header">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title" style="font-family:var(--display);font-size:clamp(2.5rem,5vw,4rem);">You've got<br>questions.</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How exactly do I get paid?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Each campaign gives you a unique QR code and tracking link. When your followers use it at the venue door, it logs a verified redemption. Once your campaign ends, VYBE pays you via direct deposit or Venmo within 48 hours. No invoices. No chasing.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Do I need a massive following to get accepted?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">No. We have creators with 3,500 followers who out-earn accounts with 70K — because their audience is local and engaged. What matters is: are your followers in Miami/South Florida, and do they actually go out? We check this when you apply.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What kind of content do I have to make?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Most creators do a TikTok or Reel — something like "going to [Venue] this Friday, use my link for a free drink." Authentic, casual content outperforms polished ads. Each campaign gives you a brief with requirements, but we keep them minimal on purpose.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Does my post have to say it's sponsored?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Yes — and we make it easy. VYBE auto-generates the correct FTC disclosure for your caption (usually just #ad or #sponsored). This protects you legally. Every brief comes with the exact language you need. Never skip this — it's both a legal requirement and a trust signal for your audience.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Can I run multiple campaigns at once?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Yes. Once you're approved, you can pick any available campaigns that match your audience profile. Most active creators run 2-4 campaigns per month. Your dashboard shows all active campaigns, redemptions in real time, and pending payouts.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What happens if my followers don't show up?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">You only earn on verified redemptions. If no one uses your code, you earn $0 for that campaign — but there's no cost to you either. This is why we match you to venues that fit your specific audience, so campaigns are more likely to convert.</div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>STOP POSTING<br>FOR <span>FREE.</span></h2>
+  <p>Your Miami audience is worth real money every weekend. Apply in 2 minutes.</p>
+  <a href="#" class="btn-primary" onclick="document.querySelector('.creator-hero').scrollIntoView({behavior:'smooth'});return false;">Apply Now — 27 Spots Left →</a>
+</section>
+
+<footer>
+  <a href="index.html">VY<span>BE</span></a>
+  <p>© 2025 VYBE. Built for Miami creators. More cities coming soon.</p>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function handleSubmit(btn) {
+  btn.textContent = '✓ Application Received!';
+  btn.style.background = '#2DFF91';
+  btn.style.color = '#07070F';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.closest('.form-card').innerHTML = `
+      <div style="text-align:center;padding:40px 0;">
+        <div style="font-size:3rem;margin-bottom:16px;">🎉</div>
+        <h2 style="font-family:var(--display);font-size:2rem;letter-spacing:0.05em;margin-bottom:12px;color:#2DFF91;">YOU'RE IN THE QUEUE</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.7;font-size:0.95rem;max-width:320px;margin:0 auto;">We'll review your profile within 24 hours and send next steps to your email. Keep an eye on your DMs too.</p>
+        <div style="margin-top:28px;padding:16px;background:rgba(255,190,11,0.08);border:1px solid rgba(255,190,11,0.2);border-radius:10px;font-size:0.82rem;color:var(--gold);">
+          💡 While you wait, follow us on Instagram and TikTok <strong>@vybeapp</strong> so you're first to know about Miami campaigns.
+        </div>
+      </div>
+    `;
+  }, 1500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYBE — Get Paid to Post Nightlife</title>
+<meta name="description" content="VYBE connects local creators with nightlife venues. Post. Track. Get paid when people actually show up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #07070F;
+    --deep: #0D0D1E;
+    --card: #11112A;
+    --border: rgba(255,255,255,0.07);
+    --red: #FF1F55;
+    --red-glow: rgba(255,31,85,0.35);
+    --gold: #FFBE0B;
+    --gold-glow: rgba(255,190,11,0.3);
+    --white: #FFFFFF;
+    --muted: rgba(255,255,255,0.5);
+    --body: 'Outfit', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 5%;
+    background: rgba(7,7,15,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--display);
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--red);
+    color: var(--white) !important;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: #e0103e !important; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,190,11,0.1);
+    border: 1px solid rgba(255,190,11,0.3);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .hero-h1 {
+    font-family: var(--display);
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 0.03em;
+    margin-bottom: 12px;
+    animation: fadeUp 0.6s 0.1s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-h1 .accent { color: var(--red); }
+  .hero-h1 .thin { font-family: var(--body); font-weight: 300; font-size: 0.55em; display: block; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    font-weight: 400;
+    animation: fadeUp 0.6s 0.2s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-sub strong { color: var(--white); font-weight: 600; }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    padding: 16px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    box-shadow: 0 0 30px var(--red-glow);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--red-glow); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    padding: 16px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    margin-top: 72px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.4s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--display);
+    font-size: 2.8rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .stat-num span { color: var(--red); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    z-index: 1;
+    animation: fadeIn 1s 1s ease both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollDown 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollDown {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--deep);
+    padding: 14px 0;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  .marquee-track span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .marquee-track .dot { color: var(--red); font-size: 1rem; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 100px 5%; position: relative; z-index: 1; }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: 0.03em;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  #how {
+    background: var(--deep);
+  }
+
+  .how-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .step {
+    background: var(--card);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .step:hover { transform: translateY(-4px); }
+  .step:first-child { border-radius: 12px 0 0 12px; }
+  .step:last-child { border-radius: 0 12px 12px 0; }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .step:hover::before { transform: scaleX(1); }
+
+  .step-num {
+    font-family: var(--display);
+    font-size: 5rem;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    position: absolute;
+    top: 16px; right: 24px;
+    letter-spacing: 0.05em;
+  }
+
+  .step-icon {
+    width: 48px; height: 48px;
+    background: rgba(255,31,85,0.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+  }
+
+  .step h3 {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+  /* ─── EARNINGS ─── */
+  #earn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 5%;
+  }
+
+  .earn-visual {
+    position: relative;
+  }
+
+  .earn-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .earn-card::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--red-glow), transparent 70%);
+  }
+
+  .earn-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .earn-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), #8B1FFF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .earn-name { font-weight: 600; font-size: 1rem; }
+  .earn-handle { color: var(--muted); font-size: 0.85rem; }
+
+  .earn-campaign {
+    background: rgba(255,190,11,0.07);
+    border: 1px solid rgba(255,190,11,0.2);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+
+  .earn-campaign-venue { font-size: 0.8rem; color: var(--gold); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .earn-campaign-name { font-weight: 600; font-size: 1rem; margin-bottom: 8px; }
+
+  .earn-progress {
+    background: rgba(255,255,255,0.05);
+    border-radius: 100px;
+    height: 6px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .earn-bar {
+    height: 100%;
+    width: 68%;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    border-radius: 100px;
+    animation: fillBar 2s ease 0.5s both;
+  }
+  @keyframes fillBar { from { width: 0; } to { width: 68%; } }
+
+  .earn-progress-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); }
+  .earn-progress-label span:last-child { color: var(--gold); font-weight: 600; }
+
+  .earn-payout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,31,85,0.08);
+    border: 1px solid rgba(255,31,85,0.2);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+
+  .payout-label { font-size: 0.8rem; color: var(--muted); }
+  .payout-amount { font-family: var(--display); font-size: 2.2rem; color: var(--red); letter-spacing: 0.05em; }
+  .payout-status { font-size: 0.75rem; font-weight: 600; color: #2DFF91; background: rgba(45,255,145,0.1); padding: 4px 10px; border-radius: 100px; }
+
+  .float-badge {
+    position: absolute;
+    bottom: -20px; right: -20px;
+    background: var(--gold);
+    color: var(--black);
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 8px 30px var(--gold-glow);
+    animation: floatBadge 3s ease-in-out infinite;
+  }
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-8px) rotate(-2deg); }
+  }
+
+  /* ─── CATEGORIES ─── */
+  #venues {
+    background: var(--deep);
+    padding: 100px 5%;
+  }
+
+  .venues-header { text-align: center; margin-bottom: 60px; }
+  .venues-header .section-sub { margin: 0 auto; }
+
+  .venue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto 60px;
+  }
+
+  .venue-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .venue-chip:hover {
+    border-color: var(--red);
+    background: rgba(255,31,85,0.06);
+    transform: translateY(-3px);
+  }
+  .venue-chip .icon { font-size: 2rem; margin-bottom: 10px; }
+  .venue-chip .name { font-weight: 600; font-size: 0.95rem; }
+  .venue-chip .avg { font-size: 0.78rem; color: var(--red); font-weight: 600; margin-top: 4px; }
+
+  /* ─── SOCIAL PROOF ─── */
+  #proof { padding: 100px 5%; }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 60px auto 0;
+  }
+
+  .proof-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: transform 0.3s;
+  }
+  .proof-card:hover { transform: translateY(-4px); }
+
+  .proof-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 2px; }
+  .proof-text { font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+  .proof-author { display: flex; align-items: center; gap: 12px; }
+  .proof-dot {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+  }
+  .proof-info { }
+  .proof-name { font-weight: 600; font-size: 0.9rem; }
+  .proof-meta { font-size: 0.8rem; color: var(--muted); }
+
+  /* ─── CTA SECTION ─── */
+  #cta {
+    background: var(--deep);
+    text-align: center;
+    padding: 120px 5%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(255,31,85,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: var(--display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.03em;
+    line-height: 1;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-title span { color: var(--red); }
+
+  .cta-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-input {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 0.95rem;
+    width: 280px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-input::placeholder { color: var(--muted); }
+  .cta-input:focus { border-color: var(--red); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 60px 5% 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-logo {
+    font-family: var(--display);
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .footer-logo span { color: var(--red); }
+  .footer-tagline { font-size: 0.85rem; color: var(--muted); margin-top: 8px; max-width: 240px; }
+
+  .footer-links { display: flex; gap: 60px; flex-wrap: wrap; }
+  .footer-col h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; margin-bottom: 10px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--white); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-bottom p { font-size: 0.8rem; color: var(--muted); }
+
+  .socials { display: flex; gap: 14px; }
+  .social-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .social-icon:hover { border-color: var(--red); background: rgba(255,31,85,0.1); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    #earn { grid-template-columns: 1fr; }
+    .hero-stats { gap: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">VY<span>BE</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#earn">Earnings</a></li>
+    <li><a href="#venues">Venues</a></li>
+    <li><a href="creators.html">For Creators</a></li>
+    <li><a href="#cta" class="nav-cta">Join Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">Now Live in South Florida 🔥</div>
+
+  <h1 class="hero-h1">
+    <span class="thin">Post Once.</span>
+    GET <span class="accent">PAID</span><br>
+    EVERY TIME.
+  </h1>
+
+  <p class="hero-sub">
+    VYBE connects local creators with nightclubs and bars that <strong>pay per verified guest</strong> — not followers, not likes. Real money, real results.
+  </p>
+
+  <div class="hero-buttons">
+    <a href="creators.html" class="btn-primary">Apply as Creator</a>
+    <a href="#how" class="btn-secondary">See How It Works</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">$<span>50</span>–<span>400</span></div>
+      <div class="stat-label">Earned Per Campaign</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">48<span>hr</span></div>
+      <div class="stat-label">Payout Speed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<span>%</span></div>
+      <div class="stat-label">Follower Minimum</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100<span>+</span></div>
+      <div class="stat-label">Venues & Growing</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Miami Nightlife</span><span class="dot">✦</span>
+    <span>Fort Lauderdale Clubs</span><span class="dot">✦</span>
+    <span>South Beach Bars</span><span class="dot">✦</span>
+    <span>Wynwood Venues</span><span class="dot">✦</span>
+    <span>Brickell Rooftops</span><span class="dot">✦</span>
+    <span>Day Clubs</span><span class="dot">✦</span>
+    <span>Pool Parties</span><span class="dot">✦</span>
+    <span>VIP Lounges</span><span class="dot">✦</span>
+    <span>Miami Nightlife</span><span class="dot">✦</span>
+    <span>Fort Lauderdale Clubs</span><span class="dot">✦</span>
+    <span>South Beach Bars</span><span class="dot">✦</span>
+    <span>Wynwood Venues</span><span class="dot">✦</span>
+    <span>Brickell Rooftops</span><span class="dot">✦</span>
+    <span>Day Clubs</span><span class="dot">✦</span>
+    <span>Pool Parties</span><span class="dot">✦</span>
+    <span>VIP Lounges</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-header">
+    <p class="section-label reveal">The Process</p>
+    <h2 class="section-title reveal reveal-delay-1">Simple as posting.<br>Rewarding as hell.</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-icon">🎯</div>
+      <h3>PICK A CAMPAIGN</h3>
+      <p>Browse live campaigns from Miami's best venues. Pick ones that match your audience and vibe.</p>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-icon">📲</div>
+      <h3>POST YOUR WAY</h3>
+      <p>Create a TikTok or Reel. Share your unique tracked link or QR in your caption or story.</p>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-icon">📍</div>
+      <h3>FOLLOWERS SHOW UP</h3>
+      <p>Your followers scan the QR at the door. Each scan is verified and logged in real time.</p>
+    </div>
+    <div class="step reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <div class="step-icon">💸</div>
+      <h3>GET PAID</h3>
+      <p>Funds hit your account within 48 hours of verification. No chasing, no invoices.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EARNINGS -->
+<section style="padding: 0;">
+  <div id="earn">
+    <div class="reveal">
+      <p class="section-label">Creator Earnings</p>
+      <h2 class="section-title">Your following is already worth money.</h2>
+      <p class="section-sub" style="margin-bottom: 32px;">You don't need 100K followers. You need the <em>right</em> followers — people who actually go out in Miami. We match your audience to venues, not the other way around.</p>
+      <a href="creators.html" class="btn-primary">See Payout Rates →</a>
+    </div>
+    <div class="earn-visual reveal reveal-delay-2">
+      <div class="earn-card">
+        <div class="earn-profile">
+          <div class="earn-avatar">MR</div>
+          <div>
+            <div class="earn-name">Maria R.</div>
+            <div class="earn-handle">@mariagoesoout · 18.4K followers</div>
+          </div>
+        </div>
+        <div class="earn-campaign">
+          <div class="earn-campaign-venue">🏙️ LIV Miami — Friday Night</div>
+          <div class="earn-campaign-name">Bring your crew. Get paid per door scan.</div>
+          <div class="earn-progress"><div class="earn-bar"></div></div>
+          <div class="earn-progress-label"><span>34 / 50 guests verified</span><span>$10 per guest</span></div>
+        </div>
+        <div class="earn-payout">
+          <div>
+            <div class="payout-label">Current Earnings</div>
+            <div class="payout-amount">$340</div>
+          </div>
+          <div class="payout-status">✓ Pending Payout</div>
+        </div>
+      </div>
+      <div class="float-badge">🔥 Top Creator This Week</div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE TYPES -->
+<section id="venues">
+  <div class="venues-header">
+    <p class="section-label reveal">Where You'll Promote</p>
+    <h2 class="section-title reveal reveal-delay-1">Miami's best venues.<br>All on VYBE.</h2>
+    <p class="section-sub reveal reveal-delay-2">From South Beach megaclubs to Wynwood rooftops — if people go out there, venues are running campaigns here.</p>
+  </div>
+
+  <div class="venue-grid">
+    <div class="venue-chip reveal">
+      <div class="icon">🎶</div>
+      <div class="name">Nightclubs</div>
+      <div class="avg">Avg $200–$400/campaign</div>
+    </div>
+    <div class="venue-chip reveal reveal-delay-1">
+      <div class="icon">🌊</div>
+      <div class="name">Pool Parties</div>
+      <div class="avg">Avg $150–$300/campaign</div>
+    </div>
+    <div class="venue-chip reveal reveal-delay-1">
+      <div class="icon">🌆</div>
+      <div class="name">Rooftop Bars</div>
+      <div class="avg">Avg $100–$250/campaign</div>
+    </div>
+    <div class="venue-chip reveal reveal-delay-2">
+      <div class="icon">🍸</div>
+      <div class="name">Cocktail Lounges</div>
+      <div class="avg">Avg $100–$200/campaign</div>
+    </div>
+    <div class="venue-chip reveal reveal-delay-2">
+      <div class="icon">☀️</div>
+      <div class="name">Day Clubs</div>
+      <div class="avg">Avg $150–$350/campaign</div>
+    </div>
+    <div class="venue-chip reveal reveal-delay-3">
+      <div class="icon">🥂</div>
+      <div class="name">Bottle Service</div>
+      <div class="avg">Avg $300–$600/campaign</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section id="proof">
+  <div style="text-align: center; margin-bottom: 60px;">
+    <p class="section-label reveal">Creator Stories</p>
+    <h2 class="section-title reveal reveal-delay-1">Real results from<br>real creators.</h2>
+  </div>
+
+  <div class="proof-grid">
+    <div class="proof-card reveal">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-text">"I posted one TikTok about Space nightclub on Saturday. By Sunday I had $280 in my account. No brand deal, no negotiating. Just posted and got paid."</p>
+      <div class="proof-author">
+        <div class="proof-dot" style="background: linear-gradient(135deg, #FF1F55, #8B1FFF);">JS</div>
+        <div class="proof-info">
+          <div class="proof-name">Jordan S.</div>
+          <div class="proof-meta">@jordanoutinmiami · 22K followers</div>
+        </div>
+      </div>
+    </div>
+    <div class="proof-card reveal reveal-delay-1">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-text">"Finally something that pays me for my local audience. I'm not a mega influencer but my followers actually go out in Miami. VYBE gets that."</p>
+      <div class="proof-author">
+        <div class="proof-dot" style="background: linear-gradient(135deg, #FFBE0B, #FF6B35);">TL</div>
+        <div class="proof-info">
+          <div class="proof-name">Tanya L.</div>
+          <div class="proof-meta">@tanyamiami · 9.1K followers</div>
+        </div>
+      </div>
+    </div>
+    <div class="proof-card reveal reveal-delay-2">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-text">"I've done 7 campaigns in 3 weeks. Made $1,100 total. The dashboard shows everything in real time — you can literally watch people redeem your code at the door."</p>
+      <div class="proof-author">
+        <div class="proof-dot" style="background: linear-gradient(135deg, #2DFF91, #00B4D8);">DM</div>
+        <div class="proof-info">
+          <div class="proof-name">Diego M.</div>
+          <div class="proof-meta">@diegosouthbeach · 34K followers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <p class="section-label" style="position:relative;z-index:1;">Early Access</p>
+  <h2 class="cta-title">JOIN THE<br><span>LAUNCH</span> CREW.</h2>
+  <p class="cta-sub">We're onboarding the first 100 creators in Miami. Drop your handle and we'll reach out within 24 hours.</p>
+  <div class="cta-form">
+    <input type="text" class="cta-input" placeholder="Instagram or TikTok handle">
+    <a href="creators.html" class="btn-primary">Get Early Access →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a href="#" class="footer-logo">VY<span>BE</span></a>
+      <p class="footer-tagline">Performance influencer marketing for nightlife. Post once. Get paid every time guests show up.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Creators</h4>
+        <a href="creators.html">Apply Now</a>
+        <a href="creators.html#how">How It Works</a>
+        <a href="creators.html#earn">Payout Rates</a>
+        <a href="creators.html#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Venues</h4>
+        <a href="#">For Venues</a>
+        <a href="#">Pricing</a>
+        <a href="#">Request Demo</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 VYBE. All rights reserved. Launching in Miami, FL.</p>
+    <div class="socials">
+      <a href="#" class="social-icon">📸</a>
+      <a href="#" class="social-icon">🎵</a>
+      <a href="#" class="social-icon">𝕏</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

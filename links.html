@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYBE — Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #07070F;
+    --card: #11112A;
+    --border: rgba(255,255,255,0.09);
+    --red: #FF1F55;
+    --red-glow: rgba(255,31,85,0.3);
+    --gold: #FFBE0B;
+    --white: #FFFFFF;
+    --muted: rgba(255,255,255,0.5);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(255,31,85,0.18) 0%, transparent 60%);
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+    color: var(--white);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 20px 80px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* Profile */
+  .profile {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: fadeDown 0.5s ease both;
+  }
+
+  .profile-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  .profile-logo span { color: var(--red); }
+
+  .profile-handle {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .profile-bio {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+    max-width: 280px;
+    margin: 0 auto 16px;
+  }
+
+  .profile-city {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--gold);
+    background: rgba(255,190,11,0.1);
+    border: 1px solid rgba(255,190,11,0.2);
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+
+  /* Links */
+  .links { display: flex; flex-direction: column; gap: 12px; }
+
+  .link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.25s;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.03));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .link-btn:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+  .link-btn:hover::before { opacity: 1; }
+
+  .link-btn.primary {
+    background: var(--red);
+    border-color: transparent;
+    box-shadow: 0 4px 20px var(--red-glow);
+  }
+  .link-btn.primary:hover { box-shadow: 0 8px 30px var(--red-glow); }
+
+  .link-btn.gold-btn {
+    background: rgba(255,190,11,0.1);
+    border-color: rgba(255,190,11,0.25);
+  }
+  .link-btn.gold-btn:hover { border-color: var(--gold); }
+
+  .link-left { display: flex; align-items: center; gap: 14px; }
+  .link-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .link-btn.primary .link-icon { background: rgba(255,255,255,0.15); }
+  .link-btn:not(.primary):not(.gold-btn) .link-icon { background: rgba(255,255,255,0.05); }
+  .link-btn.gold-btn .link-icon { background: rgba(255,190,11,0.1); }
+
+  .link-text { }
+  .link-title { font-weight: 700; font-size: 0.95rem; }
+  .link-sub { font-size: 0.75rem; opacity: 0.65; margin-top: 2px; }
+  .link-arrow { opacity: 0.4; font-size: 0.9rem; transition: transform 0.2s; }
+  .link-btn:hover .link-arrow { transform: translateX(3px); opacity: 0.8; }
+
+  /* Stats pill */
+  .stats-strip {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 24px 0;
+    flex-wrap: wrap;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+  .stat-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 16px;
+    font-size: 0.78rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .stat-pill strong { color: var(--gold); font-weight: 700; }
+
+  .footer-text {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    animation: fadeUp 0.5s 0.6s ease both;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="profile">
+    <div class="profile-logo">VY<span>BE</span></div>
+    <div class="profile-handle">@vybeapp</div>
+    <p class="profile-bio">Get paid to post nightlife. Earn per verified guest — not views. Now in Miami 🔥</p>
+    <div class="profile-city">📍 Miami, FL — More cities coming</div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-pill"><strong>$50–$400</strong> per campaign</div>
+    <div class="stat-pill"><strong>48hr</strong> payout</div>
+    <div class="stat-pill"><strong>100+</strong> venues</div>
+  </div>
+
+  <div class="links">
+    <a href="creators.html" class="link-btn primary" style="animation-delay:0.1s">
+      <div class="link-left">
+        <div class="link-icon">✨</div>
+        <div class="link-text">
+          <div class="link-title">Apply as a Creator</div>
+          <div class="link-sub">27 early spots left — guaranteed first payout</div>
+        </div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="index.html" class="link-btn gold-btn" style="animation-delay:0.15s">
+      <div class="link-left">
+        <div class="link-icon">💸</div>
+        <div class="link-text">
+          <div class="link-title">How Creators Get Paid</div>
+          <div class="link-sub">Campaigns, payouts, and how it works</div>
+        </div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="index.html#how" class="link-btn" style="animation-delay:0.2s">
+      <div class="link-left">
+        <div class="link-icon">🎯</div>
+        <div class="link-text">
+          <div class="link-title">See Live Campaigns</div>
+          <div class="link-sub">Miami venues actively running now</div>
+        </div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="index.html#proof" class="link-btn" style="animation-delay:0.25s">
+      <div class="link-left">
+        <div class="link-icon">⭐</div>
+        <div class="link-text">
+          <div class="link-title">Creator Success Stories</div>
+          <div class="link-sub">Real creators, real earnings</div>
+        </div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="index.html#cta" class="link-btn" style="animation-delay:0.3s">
+      <div class="link-left">
+        <div class="link-icon">🏟️</div>
+        <div class="link-text">
+          <div class="link-title">I Own a Venue</div>
+          <div class="link-sub">Book a demo — only pay per guest</div>
+        </div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <p class="footer-text">VYBE Inc. · Miami, FL · vybe.app</p>
+</div>
+</body>
+</html>
